@@ -1,0 +1,31 @@
+{
+  "name": "web-dev-server-hmr-react",
+  "version": "0.1.0",
+  "description": "web-dev-server HMR plugin for React",
+  "main": "build/index.js",
+  "types": "source/module.ts",
+  "module": "build/index.module.js",
+  "scripts": {
+    "build": "npx esbuild --format=cjs script/build.ts | node",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ab180/web-dev-server-hmr-react.git"
+  },
+  "author": "ab180",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ab180/web-dev-server-hmr-react/issues"
+  },
+  "homepage": "https://github.com/ab180/web-dev-server-hmr-react#readme",
+  "dependencies": {
+    "@babel/core": "^7.15.8",
+    "@types/babel__core": "^7.1.16",
+    "@types/resolve": "^1.20.1",
+    "@web/dev-server-hmr": "^0.1.9",
+    "esbuild": "^0.13.7",
+    "react-refresh": "^0.10.0",
+    "resolve": "^1.20.0"
+  }
+}
