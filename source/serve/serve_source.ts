@@ -1,9 +1,7 @@
 import { tryOptional } from '../utility/module'
 
 import { Plugin } from '@web/dev-server-core'
-import { build, BuildOptions } from 'esbuild'
-import refreshBabel from 'react-refresh/babel'
-import * as babel from '@babel/core'
+import { transform } from '@swc/core'
 import * as fs from 'fs/promises'
 
 type ServerSource = {
@@ -21,9 +19,9 @@ const createServerSource = async (root: string): Promise<ServerSource> => {
                 && entry.endsWith('.js')
                 && state?.isFile()
             ) {
-                const code_esbuild = await fs.readFile(entry, 'utf8')
-                const code_babel = await babelRefreshCode(code_esbuild)
-                const code_inject = injectRefreshCode(originalUrl, code_babel)
+                const code = await fs.readFile(entry, 'utf8')
+                const code_refresh = await refreshCode(code)
+                const code_inject = injectRefreshCode(originalUrl, code_refresh)
 
                 return {
                     body: code_inject,
@@ -34,11 +32,19 @@ const createServerSource = async (root: string): Promise<ServerSource> => {
     }
 }
 
-const babelRefreshCode = async (code: string) => (
-    await babel.transformAsync(code, {
-        plugins: [
-            [refreshBabel, { skipEnvCheck: true }],
-        ],
+const refreshCode = async (code: string) => (
+    await transform(code, {
+        jsc: {
+            parser: {
+                syntax: 'ecmascript',
+            },
+            target: 'es2020',
+            transform: {
+                react: {
+                    refresh: true,
+                },
+            },
+        },
     })
 ).code
 

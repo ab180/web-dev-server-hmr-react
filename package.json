@@ -20,8 +20,7 @@
   },
   "homepage": "https://github.com/ab180/web-dev-server-hmr-react#readme",
   "dependencies": {
-    "@babel/core": "^7.15.8",
-    "@types/babel__core": "^7.1.16",
+    "@swc/core": "1.2.90",
     "@types/resolve": "^1.20.1",
     "@web/dev-server-hmr": "^0.1.9",
     "esbuild": "^0.13.7",
