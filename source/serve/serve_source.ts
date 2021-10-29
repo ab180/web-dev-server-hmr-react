@@ -10,7 +10,7 @@ type ServerSource = {
 
 const createServerSource = async (root: string): Promise<ServerSource> => {
     return {
-        serveSource: async ({ path, originalUrl }) => {
+        serveSource: async ({ path }) => {
             const entry = root + path
             const state = await tryOptional(() => fs.stat(entry))
 
@@ -21,7 +21,7 @@ const createServerSource = async (root: string): Promise<ServerSource> => {
             ) {
                 const code = await fs.readFile(entry, 'utf8')
                 const code_refresh = await refreshCode(code)
-                const code_inject = injectRefreshCode(originalUrl, code_refresh)
+                const code_inject = injectRefreshCode(path, code_refresh)
 
                 return {
                     body: code_inject,
@@ -37,11 +37,13 @@ const refreshCode = async (code: string) => (
         jsc: {
             parser: {
                 syntax: 'ecmascript',
+                jsx: true,
             },
             target: 'es2020',
             transform: {
                 react: {
                     refresh: true,
+                    development: true,
                 },
             },
         },
